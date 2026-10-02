@@ -141,7 +141,6 @@
         let game = new Chess();
         let currentLevel = 0;
 
-        // Your exact messages mapped line-by-line with ratings
         const levels = [
             {
                 rating: 200,
@@ -171,7 +170,7 @@
                 rating: 1400,
                 fen: "r1bq1rk1/pp1pnppp/2np4/2b1p3/2B1P3/3P1N2/PPPN1PPP/R1BQ1RK1 w - - 0 8",
                 solution: "c2c3",
-                message: "Level 5 unlocked 🔓❤️\n\nI love listening to you…\nsometimes I just want you to keep talking, while I sit there and listen to you forever. 🫠❤️️"
+                message: "Level 5 unlocked 🔓❤️️\n\nI love listening to you…\nsometimes I just want you to keep talking, while I sit there and listen to you forever. 🫠❤️"
             },
             {
                 rating: 1600,
@@ -206,9 +205,7 @@
         ];
 
         function loadLevel(index) {
-            if (index >= levels.length) {
-                return;
-            }
+            if (index >= levels.length) return;
 
             currentLevel = index;
             game.load(levels[currentLevel].fen);
@@ -249,7 +246,6 @@
             let expectedMoveStr = levels[currentLevel].solution;
 
             if (playedMoveStr === expectedMoveStr) {
-                // Correct move! Show the pop-up modal with your exact message
                 $('#popup-text').text(levels[currentLevel].message);
                 $('#popup-overlay').css('display', 'flex').hide().fadeIn(300);
             } else {
@@ -270,7 +266,8 @@
             loadLevel(currentLevel + 1);
         }
 
-        $(document).ready(function() {
+        // Use window.load to ensure the piece images are fully fetched before building the board
+        $(window).on('load', function() {
             loadLevel(0);
         });
     </script>
