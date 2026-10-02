@@ -1,100 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Maneesha ❤️</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;background:#ffe6eb;font-family:system-ui;padding:15px}
-.card{background:white;width:100%;max-width:420px;padding:20px;border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,.1);text-align:center}
-h2{color:#ff2e63;margin:5px 0;font-size:20px}
-p{color:#444;white-space:pre-line;line-height:1.5;font-size:15px;min-height:80px}
-#board{width:100%;max-width:360px;margin:12px auto;border-radius:12px;overflow:hidden}
-button{background:#ff2e63;color:white;border:none;padding:12px 24px;border-radius:50px;font-size:15px;margin-top:10px;cursor:pointer;width:100%}
-.hint{font-size:12px;color:#999;margin-top:8px}
-.rating{background:#fff0f3;color:#ff2e63;display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin-bottom:8px}
+body{background:#ffd6de;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif}
+.card{background:white;padding:18px;border-radius:24px;max-width:360px;width:90%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.board{display:grid;grid-template-columns:repeat(8,1fr);border:4px solid #b58863;border-radius:12px;overflow:hidden;width:100%;aspect-ratio:1}
+.sq{display:flex;justify-content:center;align-items:center;font-size:28px;aspect-ratio:1}
+.light{background:#f0d9b5}.dark{background:#b58863}
+.msg{margin-top:10px;color:#d6336c;font-weight:bold}
+button{margin-top:12px;background:#ff4d6d;color:white;border:0;padding:10px 18px;border-radius:20px}
 </style>
 </head>
 <body>
 <div class="card">
-<div class="rating" id="rating"></div>
-<h2 id="title"></h2>
-<p id="msg"></p>
-<div id="board"></div>
-<div class="hint" id="hint"></div>
-<button id="nextBtn" style="display:none" onclick="nextLevel()">Next Level ❤️</button>
+<div style="color:#ff4d6d;font-weight:bold">Rating: <span id="r">200</span> | Puzzle <span id="p">1</span>/10</div>
+<h2 id="title" style="color:#ff2e6d;margin:8px 0">Level 1 unlocked 🔓❤️</h2>
+<p id="desc">White to move - Mate in 1<br><small>You are smarter than I thought.. 👀❤️</small></p>
+<div class="board" id="board"></div>
+<div class="msg" id="msg">Rook ko dekh 😊</div>
+<button onclick="next()">Next Puzzle ❤️</button>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
 <script>
-const levels = [
-  { rating:200, title:"Level 1 unlocked 🔓❤️", msg:"You know what, you are smarter than I thought... 👀❤️\nWhite to move - Mate in 1 (Easy)", fen:"6k1/5ppp/8/8/8/8/5PPP/5RK1 w - - 0 1", solution:["f1-f8"], hint:"Rook ko dekh 😉" },
-  { rating:1000, title:"Level 2 unlocked 🔓❤️", msg:"I like your eyes, your voice…\nand that big big noseeee of yours. 👀😂❤️\nWin Queen", fen:"r1bqkbnr/ppp2ppp/2n5/2pPp3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 1", solution:["d5-c6"], hint:"Knight fork?" },
-  { rating:1100, title:"Level 3 unlocked 🔓❤️", msg:"Okay, your smile is kinda dangerous too… 😏\nBut don’t smile too much—you still have a puzzle to solve. 😂♟️\nFork trick", fen:"r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 0 1", solution:["c4-f7"], hint:"Bishop sac" },
-  { rating:1200, title:"Level 4 unlocked 🔓❤️", msg:"I don’t know when it happened…\nbut somehow, talking to you became my favourite part of the day. 🫠❤️\nMate in 2", fen:"6k1/5ppp/8/8/8/5Q2/5PPP/6K1 w - - 0 1", solution:["f3-g4","g8-h8","g4-h4"], hint:"Queen ghumao" },
-  { rating:1350, title:"Level 5 unlocked 🔓❤️", msg:"I love listening to you…\nsometimes I just want you to keep talking forever. 🫠❤️\nWin material", fen:"5rk1/5ppp/8/8/8/8/5PPP/5RK1 w - - 0 1", solution:["f1-f8"], hint:"Sac!" },
-  { rating:1500, title:"Level 6 unlocked 🔓❤️", msg:"Haaaye, tumhari aankheinnn… 👀❤️\nI could just stare into your eyes forever.", fen:"r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 1", solution:["c4-f7"], hint:"" },
-  { rating:1650, title:"Level 7 unlocked 🔓❤️", msg:"I don’t know what it is about you…\nbut I always end up wanting a little more of you. ❤️😏\nBrilliant sac", fen:"r1bqk2r/ppp2ppp/2n5/2b1p3/2B1n3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 0 1", solution:["c4-f7","e8-f7","f3-g5"], hint:"Knight check!" },
-  { rating:1800, title:"Level 8 unlocked 🔓❤️", msg:"I think I’m falling for you… 🫠❤️", fen:"r1bqkbnr/ppp2ppp/2n5/2pPp3/4P3/3P1N2/PPP2PPP/RNBQKB1R b KQkq - 0 1", solution:["c5-d4"], hint:"Center" },
-  { rating:1900, title:"Level 9 unlocked 🔓❤️", msg:"You’ve become really special to me. ❤️", fen:"r4rk1/5ppp/8/8/8/8/5PPP/5RK1 w - - 0 1", solution:["f1-f8","g8-f8","f1-f8"], hint:"Rook sac chain" },
-  { rating:2000, title:"FINAL BOSS 2000 🔓❤️", msg:"No more puzzles…\nI love you. ❤️\nMate in 3 - Final!", fen:"5R1k/6pp/5p2/8/8/8/5PPP/6K1 w - - 0 1", solution:["f8-f7","h8-h7","f7-h7"], hint:"2000 rated hai, soch ke 😉" }
-];
-let current=0, game, board, moveIndex=0;
-function loadLevel(){
-  const lvl=levels[current];
-  document.getElementById('rating').innerText="Rating: "+lvl.rating+" | Puzzle "+(current+1)+"/10";
-  document.getElementById('title').innerText=lvl.title;
-  document.getElementById('msg').innerText=lvl.msg;
-  document.getElementById('hint').innerText=lvl.hint;
-  document.getElementById('nextBtn').style.display="none";
-  game=new Chess(lvl.fen);
-  board=Chessboard('board',{position:lvl.fen,draggable:true,
-    onDrop:(s,t)=>{
-      const m=game.move({from:s,to:t,promotion:'q'});
-      if(m===null) return 'snapback';
-      checkMove(s+"-"+t);
-    }
-  });
-  moveIndex=0;
+const puzzles=[
+{fen:"6k1/5ppp/8/8/8/5PPP/5RK1",msg:"Rook ko dekh 😊",title:"Level 1 unlocked 🔓❤️",desc:"White to move - Mate in 1 (Easy)"},
+{fen:"6k1/5ppp/8/8/8/8/5PPP/6RK",msg:"Queen side? 😉",title:"Level 2 - Cute but tricky 😍",desc:"White to move - Mate in 1"},
+{fen:"5R1k/6pp/8/8/8/8/5PPP/6K1",msg:"Ab toh pro ho gayi 😘",title:"Level 3 - You are getting good! ❤️",desc:"White to move - Mate in 1"},
+]
+let idx=0;
+const map={'K':'♔','Q':'♕','R':'♖','B':'♗','N':'♘','P':'♙','k':'♚','q':'♛','r':'♜','b':'♝','n':'♞','p':'♟'};
+function draw(){
+ let b=document.getElementById('board'); b.innerHTML='';
+ let fen=puzzles[idx].fen.split('/');
+ for(let r=0;r<8;r++){
+   let row=fen[r]; let c=0;
+   for(let ch of row){
+     if(!isNaN(ch)){ for(let k=0;k<parseInt(ch);k++){ let d=document.createElement('div'); d.className='sq '+((r+c)%2==0?'light':'dark'); b.appendChild(d); c++; } }
+     else{ let d=document.createElement('div'); d.className='sq '+((r+c)%2==0?'light':'dark'); d.textContent=map[ch]||''; b.appendChild(d); c++; }
+   }
+ }
+ document.getElementById('r').textContent=200+idx*120;
+ document.getElementById('p').textContent=idx+1;
+ document.getElementById('msg').textContent=puzzles[idx].msg;
+ document.getElementById('title').textContent=puzzles[idx].title;
+ document.getElementById('desc').innerHTML=puzzles[idx].desc;
 }
-function checkMove(m){
-  const sol=levels[current].solution[moveIndex];
-  if(m===sol){
-    moveIndex++;
-    if(moveIndex>=levels[current].solution.length){
-      document.getElementById('hint').innerText="Correct! ❤️";
-      document.getElementById('nextBtn').style.display="block";
-    }else{
-      setTimeout(()=>{
-        const nextSol=levels[current].solution[moveIndex];
-        if(nextSol){
-          const from=nextSol.split('-')[0], to=nextSol.split('-')[1];
-          game.move({from,to,promotion:'q'});
-          board.position(game.fen());
-          moveIndex++;
-          if(moveIndex>=levels[current].solution.length){
-            document.getElementById('hint').innerText="Correct! ❤️";
-            document.getElementById('nextBtn').style.display="block";
-          }
-        }
-      },400);
-    }
-  }else{
-    game.undo(); board.position(game.fen());
-    document.getElementById('hint').innerText="Galat 😜 Hint: "+levels[current].hint;
-  }
-}
-function nextLevel(){
-  current++;
-  if(current>=levels.length){
-    document.querySelector('.card').innerHTML=`<h2>I Love You Maneesha ❤️</h2><p>You solved all 10 puzzles!\n200 to 2000 tak!\nNow you are officially smarter than me 😂❤️</p>`;
-    return;
-  }
-  loadLevel();
-}
-loadLevel();
+function next(){ idx=(idx+1)%puzzles.length; draw(); if(idx==2) alert("Maneesha, you are my checkmate ❤️"); }
+draw();
 </script>
 </body>
 </html>
