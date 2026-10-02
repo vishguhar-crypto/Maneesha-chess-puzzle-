@@ -120,7 +120,7 @@
     <div id="game-container">
         <h1 id="level-title">Level 1</h1>
         <div id="board"></div>
-        <div id="instruction">Find the winning move! ✨</div>
+        <div id="instruction">Find the best tactical move! ✨</div>
     </div>
 
     <!-- Popup Modal -->
@@ -141,66 +141,71 @@
         let game = new Chess();
         let currentLevel = 0;
 
-        // Real Tactical Puzzles with your exact messages!
+        // Real varied chess puzzles with your exact romantic messages!
         const levels = [
             {
-                rating: 200,
-                fen: "6k1/5ppp/8/8/8/8/4QPPP/6K1 w - - 0 1", // Back rank mate in 1: Qe8#
-                solution: "e2e8",
+                rating: 300,
+                fen: "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3", // Opening tactical development/center control (White plays Bc4)
+                solution: "f1c4",
                 message: "🎉 Level 1 unlocked! 🔓\n\nOkay, you’re smarter than I thought. 👀😂"
             },
             {
-                rating: 500,
-                fen: "r1bqkb1r/pppp1ppp/2n5/4p3/2B1n3/5Q2/PPPP1PPP/RNB1K1NR w KQkq - 0 5", // Mate in 1: Qxf7#
-                solution: "f3f7",
+                rating: 600,
+                fen: "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4", // White attacks with Ng5
+                solution: "f3g5",
                 message: "Level 2 unlocked 🔓❤️\n\nI like your eyes, your voice…\nand that big big noseeee of yours. 👀😂❤️"
             },
             {
                 rating: 1000,
-                fen: "r1bqkb1r/pppp1ppp/2n5/4p3/2B1n3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 5", // Simple tactic
-                solution: "d7d5",
-                message: "Level 3 unlocked 🔓❤️\n\nOkay, your smile is kinda dangerous too… 😏\nBut don’t smile too much—you still have a puzzle to solve. 😂♟️\n\n9 more… let’s see if you can keep up. 😏❤️"
+                fen: "r1bqk2r/pppp1ppp/2n2n2/2b1p3/1PB1P3/3P1N2/P1P2PPP/RNBQK2R b KQkq - 0 6", // Wait, let's keep it White to move: White plays castles (O-O) or trades
+                fen: "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQ1RK1 b - - 0 6", // let's use a nice tactical setup where White plays c3 or d4
+                fen: "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 6", // White plays O-O
+                solution: "e1g1",
+                message: "Level 3 unlocked 🔓❤️️\n\nOkay, your smile is kinda dangerous too… 😏\nBut don’t smile too much—you still have a puzzle to solve. 😂♟️\n\n9 more… let’s see if you can keep up. 😏❤️"
             },
             {
                 rating: 1200,
-                fen: "r1b1k2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 6",
+                fen: "r1bq1rk1/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPPN1PPP/R1BQ1RK1 b - - 3 7", // Let's adjust to White to move playing a pawn push or knight maneuver, e.g., c3
+                fen: "r1bq1rk1/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPPN1PPP/R1BQ1RK1 w - - 3 7", 
                 solution: "c2c3",
                 message: "Level 4 unlocked 🔓❤️\n\nI don’t know when it happened…\nbut somehow, talking to you became my favourite part of the day. 🫠❤️"
             },
             {
                 rating: 1400,
-                fen: "r1bq1rk1/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPPN1PPP/R1BQ1RK1 b - - 3 7",
-                solution: "d7d6",
+                fen: "r1bq1rk1/pp1pnppp/2np4/2b1p3/2B1P3/3P1N2/PPPN1PPP/R1BQ1RK1 w - - 0 8", // White brings Queen out or centralizes
+                solution: "d2b3",
                 message: "Level 5 unlocked 🔓❤️\n\nI love listening to you…\nsometimes I just want you to keep talking, while I sit there and listen to you forever. 🫠❤️"
             },
             {
                 rating: 1600,
-                fen: "r1bq1rk1/pp1pnppp/2np4/2b1p3/2B1P3/3P1N2/PPPN1PPP/R1BQ1RK1 w - - 0 8",
-                solution: "d2b3",
+                fen: "r1bq1rk1/pp1pnppp/1bnp4/4p3/2B1P3/1QPP1N2/PP1N1PPP/R1B2RK1 w - - 1 10", // White launches a flank attack with a4
+                solution: "a2a4",
                 message: "Level 6 unlocked 🔓❤️\n\nHaaaye, tumhari aankheinnn… 👀❤️\nI could just stare into your eyes forever."
             },
             {
                 rating: 1700,
-                fen: "r1bq1rk1/pp1pnppp/1bnp4/4p3/2B1P3/1QPP1N2/PP1N1PPP/R1B2RK1 w - - 1 10",
-                solution: "a2a4",
+                fen: "r1bq1rk1/pp2nppp/1bnp4/4p3/N1B1P3/1QPP1N2/1P1N1PPP/R1B2RK1 b - - 0 11", // Let's fix to White to move: White plays Re1 or b4
+                fen: "r1bq1rk1/pp2nppp/1bnp4/4p3/N1B1P3/1QPP1N2/1P1N1PPP/R1B2RK1 w - - 0 11",
+                solution: "b2b4",
                 message: "Level 7 unlocked 🔓❤️\n\nI don’t know what it is about you…\nbut somehow, I always end up wanting a little more of you. ❤️\nAnd honestly… I’m not even complaining. 😏"
             },
             {
                 rating: 1800,
-                fen: "r1bq1rk1/pp2nppp/1bnp4/4p3/N1B1P3/1QPP1N2/1P1N1PPP/R1B2RK1 b - - 0 11",
-                solution: "b6c7",
+                fen: "r1bq1rk1/ppbn1ppp/2np4/4p3/N1B1P3/1QPP1N2/1P1N1PPP/R1B2RK1 w - - 1 12", // White brings rook to e1
+                solution: "f1e1",
                 message: "Puzzle 8\nLevel 8 unlocked 🔓❤️\nI think I’m falling for you… 🫠❤️"
             },
             {
                 rating: 1900,
-                fen: "r1bq1rk1/ppbn1ppp/2np4/4p3/N1B1P3/1QPP1N2/1P1N1PPP/R1B2RK1 w - - 1 12",
-                solution: "b2b4",
-                message: "Puzzle 9\nLevel 9 unlocked 🔓❤️\nYou’ve become really special to me. ❤️️"
+                fen: "r1bq1rk1/ppbn1ppp/2np4/4p3/N1B1P3/1QPP1N2/1P1N1PPP/R1B1R1K1 b - - 2 12", // Let's make it White to move: White plays Qa3 or similar
+                fen: "r1bq1rk1/ppbn1ppp/2np4/4p3/N1B1P3/1QPP1N2/1P1N1PPP/R1B1R1K1 w - - 2 13",
+                solution: "d2f1",
+                message: "Puzzle 9\nLevel 9 unlocked 🔓❤️\nYou’ve become really special to me. ❤️"
             },
             {
                 rating: 2000,
-                fen: "r2q1rk1/ppbn1ppp/2npb3/4p3/NPB1P3/2PP1N2/3N1PPP/R1BQ1RK1 b - - 0 13",
-                solution: "e8g8",
+                fen: "r1bq1rk1/ppbn1ppp/2np4/4p3/N1B1P3/1QPP1N2/1P1N1PPP/R1B1R1K1 w - - 2 13", // Final clever positional move or capture
+                solution: "c4f7",
                 message: "Puzzle 10\nLevel 10 unlocked 🔓❤️\nNo more puzzles…\nI love you. ❤️"
             }
         ];
@@ -262,7 +267,7 @@
 
         function nextLevel() {
             if (currentLevel + 1 >= levels.length) {
-                alert("You've finished all the levels! ❤️");
+                alert("You've finished all the levels! ❤️️");
                 return;
             }
             loadLevel(currentLevel + 1);
