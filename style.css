@@ -1,0 +1,72 @@
+body {
+    background-color: #fff0f3;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #590d22;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+#game-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(128, 0, 32, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+#board {
+    width: 350px;
+    margin: 0 auto 20px auto;
+}
+
+/* Custom Pink Chessboard Theme */
+.white-1e1d7 {
+    background-color: #ffccd5 !important;
+}
+.black-3c85d {
+    background-color: #c9184a !important;
+}
+
+/* Message Modal / Box */
+#message-box {
+    display: none;
+    background: #ffb3c1;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+    font-size: 1rem;
+    line-height: 1.4;
+    white-space: pre-line;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+button {
+    background-color: #a4133c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #800f2f;
+}
