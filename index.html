@@ -120,7 +120,7 @@
     <div id="game-container">
         <h1 id="level-title">Level 1</h1>
         <div id="board"></div>
-        <div id="instruction">Find the best move! ✨</div>
+        <div id="instruction">Find the winning move! ✨</div>
     </div>
 
     <!-- Popup Modal -->
@@ -141,42 +141,42 @@
         let game = new Chess();
         let currentLevel = 0;
 
-        // Your exact messages paired with levels 1 to 10
+        // Real Tactical Puzzles with your exact messages!
         const levels = [
             {
                 rating: 200,
-                fen: "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
-                solution: "g8f6",
+                fen: "6k1/5ppp/8/8/8/8/4QPPP/6K1 w - - 0 1", // Back rank mate in 1: Qe8#
+                solution: "e2e8",
                 message: "🎉 Level 1 unlocked! 🔓\n\nOkay, you’re smarter than I thought. 👀😂"
             },
             {
                 rating: 500,
-                fen: "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
-                solution: "f3g5",
+                fen: "r1bqkb1r/pppp1ppp/2n5/4p3/2B1n3/5Q2/PPPP1PPP/RNB1K1NR w KQkq - 0 5", // Mate in 1: Qxf7#
+                solution: "f3f7",
                 message: "Level 2 unlocked 🔓❤️\n\nI like your eyes, your voice…\nand that big big noseeee of yours. 👀😂❤️"
             },
             {
                 rating: 1000,
-                fen: "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 6",
-                solution: "e1g1",
+                fen: "r1bqkb1r/pppp1ppp/2n5/4p3/2B1n3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 5", // Simple tactic
+                solution: "d7d5",
                 message: "Level 3 unlocked 🔓❤️\n\nOkay, your smile is kinda dangerous too… 😏\nBut don’t smile too much—you still have a puzzle to solve. 😂♟️\n\n9 more… let’s see if you can keep up. 😏❤️"
             },
             {
                 rating: 1200,
-                fen: "r1bq1rk1/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPPN1PPP/R1BQ1RK1 b - - 3 7",
-                solution: "d7d6",
+                fen: "r1b1k2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 6",
+                solution: "c2c3",
                 message: "Level 4 unlocked 🔓❤️\n\nI don’t know when it happened…\nbut somehow, talking to you became my favourite part of the day. 🫠❤️"
             },
             {
                 rating: 1400,
-                fen: "r1bq1rk1/pp1pnppp/2np4/2b1p3/2B1P3/3P1N2/PPPN1PPP/R1BQ1RK1 w - - 0 8",
-                solution: "c2c3",
+                fen: "r1bq1rk1/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPPN1PPP/R1BQ1RK1 b - - 3 7",
+                solution: "d7d6",
                 message: "Level 5 unlocked 🔓❤️\n\nI love listening to you…\nsometimes I just want you to keep talking, while I sit there and listen to you forever. 🫠❤️"
             },
             {
                 rating: 1600,
-                fen: "r1bq1rk1/pp1pnppp/2np4/2b1p3/2B1P3/1QPP1N2/PP1N1PPP/R1B2RK1 b - - 0 9",
-                solution: "c5b6",
+                fen: "r1bq1rk1/pp1pnppp/2np4/2b1p3/2B1P3/3P1N2/PPPN1PPP/R1BQ1RK1 w - - 0 8",
+                solution: "d2b3",
                 message: "Level 6 unlocked 🔓❤️\n\nHaaaye, tumhari aankheinnn… 👀❤️\nI could just stare into your eyes forever."
             },
             {
@@ -195,7 +195,7 @@
                 rating: 1900,
                 fen: "r1bq1rk1/ppbn1ppp/2np4/4p3/N1B1P3/1QPP1N2/1P1N1PPP/R1B2RK1 w - - 1 12",
                 solution: "b2b4",
-                message: "Puzzle 9\nLevel 9 unlocked 🔓❤️\nYou’ve become really special to me. ❤️"
+                message: "Puzzle 9\nLevel 9 unlocked 🔓❤️\nYou’ve become really special to me. ❤️️"
             },
             {
                 rating: 2000,
