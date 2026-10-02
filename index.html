@@ -1,19 +1,67 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>For Maneesha</title><style>body{margin:0;min-height:100vh;background:#ffd6de;display:flex;justify-content:center;align-items:center;font-family:system-ui;padding:14px}.card{background:#fff;width:100%;max-width:380px;border-radius:26px;padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.15);text-align:center}.top{background:#ffe3ec;color:#ff2a6d;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:800;display:flex;justify-content:space-between}#board{display:grid;grid-template-columns:repeat(8,1fr);border:4px solid #b58863;border-radius:12px;overflow:hidden;aspect-ratio:1;margin-top:14px}.sq{display:flex;justify-content:center;align-items:center;font-size:30px;cursor:pointer}.l{background:#f0d9b5}.d{background:#b58863}.sel{background:#ff8fab!important;outline:3px solid #ff2a6d}#ttl{color:#ff2a6d;margin:12px 0 4px;font-size:18px}#task{color:#777;font-size:13px}#msg{margin-top:12px;background:#fff0f5;border-radius:12px;padding:12px;color:#c9184a;font-weight:700;min-height:42px;display:flex;align-items:center;justify-content:center;text-align:center}.btn{margin-top:14px;width:100%;padding:13px;border:0;background:#ff2a6d;color:#fff;border-radius:24px;font-weight:800;font-size:16px;display:none}</style></head><body><div class="card"><div class="top"><span>⭐ <span id="rt">200</span></span><span>Puzzle <span id="pn">1</span>/10</span></div><h2 id="ttl">Level 1</h2><div id="task">White to move</div><div id="board"></div><div id="msg"></div><button id="nextBtn" class="btn" onclick="nextLevel()">Next Puzzle ❤️</button></div><script>
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>For Maneesha ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#ffd6de;display:flex;justify-content:center;align-items:center;font-family:system-ui;padding:12px}
+.card{background:#fff;width:100%;max-width:360px;border-radius:28px;padding:16px;box-shadow:0 12px 30px rgba(0,0,0,.15);text-align:center}
+.top{background:#ffe3ec;color:#ff2a6d;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:800;display:flex;justify-content:space-between}
+#board{width:100%;margin:14px auto 0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);aspect-ratio:1/1;border:4px solid #ff8fab;border-radius:16px;overflow:hidden}
+.sq{aspect-ratio:1/1;display:flex;justify-content:center;align-items:center;font-size:28px;user-select:none}
+.l{background:#fff5f7}.d{background:#ffb3c6}
+.sel{background:#ff2a6d!important;color:#fff;transform:scale(.95)}
+#ttl{color:#ff2a6d;margin:12px 0 2px;font-size:17px;font-weight:800}
+#task{color:#888;font-size:11px;margin-bottom:2px}
+#msg{margin-top:12px;background:#fff0f5;border-radius:14px;padding:12px;color:#c9184a;font-weight:700;min-height:44px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.btn{margin-top:14px;width:100%;padding:13px;border:0;background:#ff2a6d;color:#fff;border-radius:24px;font-weight:800;display:none}
+</style></head>
+<body>
+<div class="card">
+<div class="top"><span>⭐ <span id="rt">200</span></span><span>Puzzle <span id="pn">1</span>/10</span></div>
+<h2 id="ttl"></h2><div id="task"></div>
+<div id="board"></div>
+<div id="msg"></div>
+<button id="nextBtn" class="btn" onclick="nextLevel()">Next Puzzle ❤️</button>
+</div>
+<script>
 const puzzles=[
-{rt:200,ttl:"Level 1 - Easy Start 🔓❤️",task:"White to move - Mate in 1 (Easy)",hint:"Hint: Rook ko a8 le jao 😊",win:"You know what, you are smarter than I thought... 👀❤️",pieces:{'h8':'♚','g6':'♔','a1':'♖'},sol:["a1","a8"]},
-{rt:1000,ttl:"Level 2 - 1000 Rated 😍",task:"Mate in 1 (1000)",hint:"Queen ko h5 le jao 👑",win:"Okay okay... 1000 rated puzzle bhi solve? Cute AND smart? 😍❤️",pieces:{'h8':'♚','f7':'♟','g7':'♟','e2':'♕','g6':'♔'},sol:["e2","h5"]},
-{rt:1200,ttl:"Level 3 - 1200 Rated 😘",task:"Mate in 1",hint:"Rook ko h1 le jao",win:"1200 bhi ho gaya? Pro ban gayi tu 😘",pieces:{'h8':'♚','g8':'♟','g1':'♖','f6':'♔'},sol:["g1","h1"]},
-{rt:1400,ttl:"Level 4 - 1400 Rated ❤️",task:"Mate in 1",hint:"Bishop ko f6 le jao",win:"1400? Tumhe harana mushkil, bhulana usse bhi zyada ❤️",pieces:{'h8':'♚','g7':'♟','e5':'♗','g5':'♔'},sol:["e5","f6"]},
-{rt:1600,ttl:"Level 5 - 1600 Rated 💘",task:"Mate in 1",hint:"Knight ko g7 le jao",win:"1600 rated! You stole my heart like you steal pieces 💘",pieces:{'h8':'♚','f7':'♟','g6':'♟','f5':'♘','g4':'♔'},sol:["f5","g7"]},
-{rt:1700,ttl:"Level 6 - 1700 Rated 🥺",task:"Mate in 1",hint:"Queen ko g7 le jao",win:"1700 bhi? Ek aur jeet, ek aur reason to fall for you 🥺",pieces:{'g8':'♚','g7':'♟','h7':'♟','a1':'♕','f6':'♔'},sol:["a1","g7"]},
-{rt:1800,ttl:"Level 7 - 1800 Rated ❤️",task:"Mate in 1",hint:"Rook ko h8 le jao",win:"1800 rated puzzle? Har move pe aur pyaar ho raha hai ❤️",pieces:{'a8':'♚','a6':'♟','b6':'♟','h1':'♖','c6':'♔'},sol:["h1","h8"]},
-{rt:1900,ttl:"Level 8 - 1900 Rated 👑",task:"Mate in 1",hint:"Queen ko g7 le jao",win:"1900! My Queen is too good at this game 👑❤️",pieces:{'h8':'♚','g7':'♟','f8':'♜','g5':'♕','g3':'♔'},sol:["g5","g7"]},
-{rt:1950,ttl:"Level 9 - 1950 Rated 🥺",task:"Mate in 1",hint:"Queen ko h4 le jao",win:"Bas ek last, fir ek sawaal hai jo dil me hai... 🥺❤️",pieces:{'h6':'♚','g6':'♟','h5':'♟','f4':'♕','f6':'♔'},sol:["f4","h4"]},
-{rt:2000,ttl:"FINAL - 2000 HARDEST ❤️♟️",task:"Checkmate my heart - HARDEST",hint:"Last - Queen ko e7 le jao 💘",win:"You are my forever checkmate, Maneesha. 2000 rated puzzle bhi solve kar diya! Will you be my Queen forever? ❤️♟️",pieces:{'e8':'♚','d7':'♟','f7':'♟','e1':'♔','e2':'♕','d1':'♖','f1':'♖'},sol:["e2","e7"]}
+{rt:200,ttl:"Level 1 - Easy 🔓❤️",task:"White to move - Mate in 1",hint:"Can you find the winning move? 😉",win:"You know what, you are smarter than I thought... 👀❤️",pieces:{'h8':'♚','g6':'♔','a1':'♖'},sol:["a1","a8"]},
+{rt:1000,ttl:"Level 2 - 1000 💗",task:"White to move - Mate in 1",hint:"Look closely... 👑",win:"Okay cutie, cute AND smart? 😍",pieces:{'h8':'♚','f7':'♟','g7':'♟','e2':'♕','g6':'♔'},sol:["e2","h5"]},
+{rt:1200,ttl:"Level 3 - 1200 😘",task:"Mate in 1",hint:"Think... where can it go?",win:"Pro ban gayi tu 😘",pieces:{'h8':'♚','g8':'♟','g1':'♖','f6':'♔'},sol:["g1","h1"]},
+{rt:1400,ttl:"Level 4 - 1400 ❤️",task:"Mate in 1",hint:"Find the magic move ✨",win:"Tumhe harana mushkil, bhulana usse bhi zyada ❤️",pieces:{'h8':'♚','g7':'♟','e5':'♗','g5':'♔'},sol:["e5","f6"]},
+{rt:1600,ttl:"Level 5 - 1600 💘",task:"Mate in 1",hint:"Knight time 🐴",win:"You stole my heart like pieces 💘",pieces:{'h8':'♚','f7':'♟','g6':'♟','f5':'♘','g4':'♔'},sol:["f5","g7"]},
+{rt:1700,ttl:"Level 6 - 1700 🥺",task:"Mate in 1",hint:"Queen wants something...",win:"Ek aur reason to fall for you 🥺",pieces:{'g8':'♚','g7':'♟','h7':'♟','a1':'♕','f6':'♔'},sol:["a1","g7"]},
+{rt:1800,ttl:"Level 7 - 1800 ❤️",task:"Mate in 1",hint:"Last rank is weak...",win:"Har move pe aur pyaar ❤️",pieces:{'a8':'♚','a6':'♟','b6':'♟','h1':'♖','c6':'♔'},sol:["h1","h8"]},
+{rt:1900,ttl:"Level 8 - 1900 👑",task:"Mate in 1",hint:"My Queen is looking...",win:"My Queen is too good 👑❤️",pieces:{'h8':'♚','g7':'♟','f8':'♜','g5':'♕','g3':'♔'},sol:["g5","g7"]},
+{rt:1950,ttl:"Level 9 - 1950 🥺",task:"Mate in 1",hint:"Almost done...",win:"Bas ek last, fir ek sawaal hai... 🥺",pieces:{'h6':'♚','g6':'♟','h5':'♟','f4':'♕','f6':'♔'},sol:["f4","h4"]},
+{rt:2000,ttl:"FINAL 2000 ❤️♟️",task:"Checkmate my heart!",hint:"Win my heart 💘",win:"You are my forever checkmate! Will you be my Queen forever? ❤️♟️",pieces:{'e8':'♚','d7':'♟','f7':'♟','e1':'♔','e2':'♕'},sol:["e2","e7"]}
 ];
-let idx=0,sel=null;function drawBoard(){const b=document.getElementById('board');b.innerHTML='';sel=null;for(let r=8;r>=1;r--){for(let f=0;f<8;f++){let sq=String.fromCharCode(97+f)+r;let d=document.createElement('div');d.className='sq '+((r+f)%2==0?'l':'d');d.dataset.sq=sq;if(puzzles[idx].pieces[sq])d.textContent=puzzles[idx].pieces[sq];d.onclick=()=>onClick(sq,d);b.appendChild(d);}}document.getElementById('rt').textContent=puzzles[idx].rt;document.getElementById('pn').textContent=idx+1;document.getElementById('ttl').textContent=puzzles[idx].ttl;document.getElementById('task').textContent=puzzles[idx].task;document.getElementById('msg').textContent=puzzles[idx].hint;document.getElementById('nextBtn').style.display='none';}
-function onClick(sq,el){const puz=puzzles[idx];if(sel){let from=sel;document.querySelectorAll('.sq').forEach(e=>e.classList.remove('sel'));if(from===sq){sel=null;return;}if(from===puz.sol[0]&&sq===puz.sol[1]){puz.pieces[sq]=puz.pieces[from];delete puz.pieces[from];drawBoardPartial();document.getElementById('msg').textContent="✅ "+puz.win;document.getElementById('nextBtn').style.display='block';if(idx===9)setTimeout(()=>alert("Maneesha ❤️ 2000 rated bhi solve kar diya! Will you be my Queen forever?"),600);}else{document.getElementById('msg').textContent="❌ Wrong! "+puz.hint;sel=null;}}else{if(puzzles[idx].pieces[sq]){sel=sq;el.classList.add('sel');}}}
-function drawBoardPartial(){const b=document.getElementById('board');b.innerHTML='';for(let r=8;r>=1;r--){for(let f=0;f<8;f++){let sq=String.fromCharCode(97+f)+r;let d=document.createElement('div');d.className='sq '+((r+f)%2==0?'l':'d');if(puzzles[idx].pieces[sq])d.textContent=puzzles[idx].pieces[sq];b.appendChild(d);}}}
-function nextLevel(){if(idx<9){idx++;drawBoard();}else{alert("Maneesha ❤️ You completed 2000 rated! You are my Queen forever!");}}
+let idx=0,sel=null;
+function drawBoard(){
+const b=document.getElementById('board');b.innerHTML='';sel=null;
+for(let r=8;r>=1;r--)for(let f=0;f<8;f++){
+let sq=String.fromCharCode(97+f)+r;
+let d=document.createElement('div');
+d.className='sq '+((r+f)%2==0?'l':'d');
+if(puzzles[idx].pieces[sq])d.textContent=puzzles[idx].pieces[sq];
+d.onclick=()=>onClick(sq,d);b.appendChild(d);
+}
+document.getElementById('rt').textContent=puzzles[idx].rt;
+document.getElementById('pn').textContent=idx+1;
+document.getElementById('ttl').textContent=puzzles[idx].ttl;
+document.getElementById('task').textContent=puzzles[idx].task;
+document.getElementById('msg').textContent=puzzles[idx].hint;
+document.getElementById('nextBtn').style.display='none';
+}
+function onClick(sq,el){
+const p=puzzles[idx];
+if(sel){
+let from=sel;document.querySelectorAll('.sq').forEach(e=>e.classList.remove('sel'));
+if(from===sq){sel=null;return;}
+if(from===p.sol[0]&&sq===p.sol[1]){p.pieces[sq]=p.pieces[from];delete p.pieces[from];drawBoard();document.getElementById('msg').textContent="✅ "+p.win;document.getElementById('nextBtn').style.display='block';document.getElementById('nextBtn').textContent=idx===9?"You won my heart ❤️":"Next Puzzle ❤️";}
+else{document.getElementById('msg').textContent="❌ Galat! Try again - "+p.hint;sel=null;}
+}else{if(puzzles[idx].pieces[sq]){sel=sq;el.classList.add('sel');}}
+}
+function nextLevel(){if(idx<9){idx++;drawBoard();}else{alert("Maneesha ❤️ Will you be my Queen forever?");}}
 drawBoard();
 </script></body></html>
